@@ -1,0 +1,38 @@
+PODS:
+  - TomTomOnlineSDKMaps (2.4.436):
+    - TomTomOnlineSDKMaps/Offline (= 2.4.436)
+    - TomTomOnlineUtils (= 2.4.436)
+  - TomTomOnlineSDKMaps/Offline (2.4.436):
+    - TomTomOnlineSDKMapsStyle (= 2.4.436)
+    - TomTomOnlineUtils (= 2.4.436)
+  - TomTomOnlineSDKMapsStyle (2.4.436):
+    - TomTomOnlineUtils (= 2.4.436)
+  - TomTomOnlineSDKRouting (2.4.436):
+    - TomTomOnlineUtils (= 2.4.436)
+  - TomTomOnlineSDKSearch (2.4.436):
+    - TomTomOnlineUtils (= 2.4.436)
+  - TomTomOnlineUtils (2.4.436)
+
+DEPENDENCIES:
+  - TomTomOnlineSDKMaps
+  - TomTomOnlineSDKRouting
+  - TomTomOnlineSDKSearch
+
+SPEC REPOS:
+  trunk:
+    - TomTomOnlineSDKMaps
+    - TomTomOnlineSDKMapsStyle
+    - TomTomOnlineSDKRouting
+    - TomTomOnlineSDKSearch
+    - TomTomOnlineUtils
+
+SPEC CHECKSUMS:
+  TomTomOnlineSDKMaps: 9f052feaee3641c4a60d4a224580c5dcf6fdc803
+  TomTomOnlineSDKMapsStyle: 5bfb0fe6d4b3e9e9fc26892f8bd1433eb4bac9e1
+  TomTomOnlineSDKRouting: 95ff7bd953fcbfc68af98dc54d52d050c3fca1eb
+  TomTomOnlineSDKSearch: 89fc145124b3c4ac68ef9402e27cad5db920b59f
+  TomTomOnlineUtils: ff92b0f7764b65f17835328a702d70825867d02c
+
+PODFILE CHECKSUM: 95cf2fbb27f6c271ff5ee3a87b8c0392403412a4
+
+COCOAPODS: 1.8.4

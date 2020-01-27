@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="15702" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15704"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <scenes>
+        <!--Input View Controller-->
+        <scene sceneID="tne-QT-ifu">
+            <objects>
+                <viewController id="BYZ-38-t0r" customClass="InputViewController" customModule="FuelTrip" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Calculate your trip costs and your fuel stops" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="LRs-kx-c5m">
+                                <rect key="frame" x="105" y="164" width="229" height="101"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="20"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Where to?" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="KZu-D9-ZNd">
+                                <rect key="frame" x="80" y="431" width="279" height="34"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="30"/>
+                                <textInputTraits key="textInputTraits" returnKeyType="go" textContentType="address-level2"/>
+                            </textField>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="w1K-sR-3BE">
+                                <rect key="frame" x="122" y="653" width="172" height="60"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="40"/>
+                                <state key="normal" title="Calculate!"/>
+                                <connections>
+                                    <action selector="calculateButtonPressed:" destination="BYZ-38-t0r" eventType="touchUpInside" id="8EB-fW-uVW"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" systemColor="systemIndigoColor" red="0.34509803919999998" green="0.33725490200000002" blue="0.83921568629999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <constraints>
+                            <constraint firstItem="w1K-sR-3BE" firstAttribute="top" secondItem="KZu-D9-ZNd" secondAttribute="bottom" constant="188" id="2Ey-J8-GMi"/>
+                            <constraint firstItem="KZu-D9-ZNd" firstAttribute="top" secondItem="LRs-kx-c5m" secondAttribute="bottom" constant="166" id="D5C-WK-mNf"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="KZu-D9-ZNd" secondAttribute="bottom" constant="397" id="EFK-G1-nAi"/>
+                            <constraint firstItem="LRs-kx-c5m" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="105" id="FCN-yN-yr6"/>
+                            <constraint firstItem="KZu-D9-ZNd" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="80" id="FMX-ax-muo"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="w1K-sR-3BE" secondAttribute="bottom" constant="149" id="OdB-tB-TeK"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="KZu-D9-ZNd" secondAttribute="trailing" constant="55" id="S85-w4-B98"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="w1K-sR-3BE" secondAttribute="trailing" constant="120" id="Tdy-F6-BqF"/>
+                            <constraint firstItem="LRs-kx-c5m" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="120" id="bA5-z3-sco"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="LRs-kx-c5m" secondAttribute="trailing" constant="80" id="e9P-Ay-6Hg"/>
+                            <constraint firstItem="KZu-D9-ZNd" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="387" id="wBX-X6-deJ"/>
+                            <constraint firstItem="w1K-sR-3BE" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="122" id="wNY-H3-pGq"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
+                    </view>
+                    <navigationItem key="navigationItem" id="S9l-Zd-FYR"/>
+                    <connections>
+                        <outlet property="destinationTextField" destination="KZu-D9-ZNd" id="fBH-kz-3rK"/>
+                        <segue destination="pvr-ee-YdI" kind="popoverPresentation" identifier="goToTarget" popoverAnchorView="8bC-Xf-vdC" id="TyI-yG-IvM">
+                            <popoverArrowDirection key="popoverArrowDirection" up="YES" down="YES" left="YES" right="YES"/>
+                        </segue>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="131.8840579710145" y="138.61607142857142"/>
+        </scene>
+        <!--Target View Controller-->
+        <scene sceneID="WQK-6m-D0V">
+            <objects>
+                <viewController id="pvr-ee-YdI" customClass="TargetViewController" customModule="FuelTrip" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="Vq8-st-tlR">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="842"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="DestinationLabel" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fch-FI-e0a">
+                                <rect key="frame" x="130" y="145" width="154" height="41"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" systemColor="systemTealColor" red="0.35294117650000001" green="0.7843137255" blue="0.98039215690000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="numberOfFuelStops" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wjD-08-NdE">
+                                <rect key="frame" x="130" y="313.5" width="154" height="20.5"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" systemColor="systemTealColor" red="0.35294117650000001" green="0.7843137255" blue="0.98039215690000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="distanceInMiles" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="nWZ-HB-rFy">
+                                <rect key="frame" x="154" y="430" width="119" height="20.5"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" systemColor="systemTealColor" red="0.35294117650000001" green="0.7843137255" blue="0.98039215690000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="moneyForGas" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="O7i-O1-TUj">
+                                <rect key="frame" x="160" y="537.5" width="107" height="20.5"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" systemColor="systemTealColor" red="0.35294117650000001" green="0.7843137255" blue="0.98039215690000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <color key="backgroundColor" systemColor="systemIndigoColor" red="0.34509803919999998" green="0.33725490200000002" blue="0.83921568629999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <constraints>
+                            <constraint firstItem="nWZ-HB-rFy" firstAttribute="top" secondItem="wjD-08-NdE" secondAttribute="bottom" constant="96" id="19o-GU-Rol"/>
+                            <constraint firstItem="efC-jD-cKZ" firstAttribute="trailing" secondItem="nWZ-HB-rFy" secondAttribute="trailing" constant="141" id="KtU-ys-frS"/>
+                            <constraint firstItem="fch-FI-e0a" firstAttribute="top" secondItem="efC-jD-cKZ" secondAttribute="top" constant="145" id="MNe-0b-ZWj"/>
+                            <constraint firstItem="O7i-O1-TUj" firstAttribute="leading" secondItem="efC-jD-cKZ" secondAttribute="leading" constant="160" id="QMo-Ge-5Lc"/>
+                            <constraint firstItem="wjD-08-NdE" firstAttribute="top" secondItem="fch-FI-e0a" secondAttribute="bottom" constant="148" id="Tge-p2-vdd"/>
+                            <constraint firstItem="fch-FI-e0a" firstAttribute="leading" secondItem="efC-jD-cKZ" secondAttribute="leading" constant="130" id="UTj-GQ-4MR"/>
+                            <constraint firstItem="efC-jD-cKZ" firstAttribute="bottom" secondItem="O7i-O1-TUj" secondAttribute="bottom" constant="250" id="Wvl-bx-VM2"/>
+                            <constraint firstItem="nWZ-HB-rFy" firstAttribute="leading" secondItem="efC-jD-cKZ" secondAttribute="leading" constant="154" id="flb-Se-LMX"/>
+                            <constraint firstItem="wjD-08-NdE" firstAttribute="leading" secondItem="efC-jD-cKZ" secondAttribute="leading" constant="130" id="goL-Eq-CMd"/>
+                            <constraint firstItem="efC-jD-cKZ" firstAttribute="trailing" secondItem="O7i-O1-TUj" secondAttribute="trailing" constant="147" id="hrw-XH-hAQ"/>
+                            <constraint firstItem="fch-FI-e0a" firstAttribute="centerX" secondItem="wjD-08-NdE" secondAttribute="centerX" id="qtk-46-RK5"/>
+                            <constraint firstItem="efC-jD-cKZ" firstAttribute="trailing" secondItem="wjD-08-NdE" secondAttribute="trailing" constant="130" id="wEG-Cg-rJS"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="efC-jD-cKZ"/>
+                    </view>
+                    <navigationItem key="navigationItem" id="O5q-t5-eiL">
+                        <barButtonItem key="leftBarButtonItem" style="done" systemItem="cancel" id="Rw7-gj-UqF">
+                            <connections>
+                                <action selector="cancelButtonPressed:" destination="pvr-ee-YdI" id="hiq-YH-EAi"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
+                    <connections>
+                        <outlet property="destinationLabel" destination="fch-FI-e0a" id="rh4-CS-fKd"/>
+                        <outlet property="distanceInMilesLabel" destination="nWZ-HB-rFy" id="ggN-C7-mx3"/>
+                        <outlet property="moneyForGasLabel" destination="O7i-O1-TUj" id="5as-UI-eQs"/>
+                        <outlet property="numberOfStopsLabel" destination="wjD-08-NdE" id="t4K-WL-Cir"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="zvc-3G-zEY" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="995.65217391304361" y="136.60714285714286"/>
+        </scene>
+    </scenes>
+</document>
