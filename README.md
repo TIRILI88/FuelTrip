@@ -1,5 +1,9 @@
 # FuelTrip
 
+App Idee:
+Berechnung der Spritkosten fuer Roadtrips.
+Berechnung der Distance zu einem Ziel. Aufgrund dieser Distanz werden die Anzahl der Tankstops und die Kosten fuer Sprit ausgegeben.
+
 erste Version - 26.Januar 2020
 
 open Tasks:
