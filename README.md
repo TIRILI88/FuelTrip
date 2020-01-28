@@ -12,6 +12,8 @@ open Tasks:
 - form calculation for Fuel Stops
 - spend Time on UI
 - fix Keyboard-Bug
+- create Logo and Design
+- publish
 
 
 Nice To Have
