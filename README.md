@@ -4,15 +4,20 @@ App Idee:
 Berechnung der Spritkosten und der Tankstops fuer Roadtrips.
 Berechnung der Distance zu einem Ziel. Aufgrund dieser Distanz werden die Anzahl der Tankstops und die Kosten fuer Sprit ausgegeben.
 
-erste Version - 26.Januar 2020
+Version 0.3 - 26.Januar 2020
 
 open Tasks:
-- passing Data through to TargetViewController - 50%
+- create Logo and Design + implement
 - fetching Distance Data from TomTom API
-- form calculation for Fuel Stops
+- convert NSNumber to String for passing
+- TargetViewController(TVC): 
+  - Labeling
+  - UI
+- implement SettingsButton
+  - Set FuelRange
+  - Set FuelPrice manually
+
 - spend Time on UI
-- fix Keyboard-Bug
-- create Logo and Design
 - publish
 
 
