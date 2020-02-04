@@ -24,9 +24,10 @@ struct MapsManager {
     //    mapsURL = https://maps.googleapis.com/maps/api/distancematrix/json?origins=Seattle&destinations=San+Francisco&key=
     
     let URLfirst = "https://maps.googleapis.com/maps/api/distancematrix/json?origins="
+    let apiKey = ""
     
     func fetchDistance(_ origin: String) {
-        let urlString = "\(URLfirst)\(origin)&destinations=\(MapsManager.destinationName)&key=AIzaSyBPKuxDwsPuBm1SPnfD6TmT7SKovChaxl4"
+        let urlString = "\(URLfirst)\(origin)&destinations=\(MapsManager.destinationName)&key=\(apiKey)"
         //print(urlString)
         performRequest(with: urlString)
     }
