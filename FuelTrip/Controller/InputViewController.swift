@@ -10,51 +10,73 @@ import UIKit
 import CoreLocation
 
 class InputViewController: UIViewController {
-
+    
     @IBOutlet weak var destinationTextField: UITextField!
     
     let locationManager = CLLocationManager()
     var mapsManager = MapsManager()
-    var mapsModel = MapsModel()
-    var destinationText = ""
     
     
-    override func viewWillAppear(_ animated: Bool) {
-        navigationController?.isNavigationBarHidden = true
-    }
-
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        let tap: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(UIInputViewController.dismissKeyboard))
         locationManager.delegate = self
         locationManager.requestWhenInUseAuthorization()
- 
         destinationTextField.delegate = self
         
+        view.addGestureRecognizer(tap)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: UIResponder.keyboardWillShowNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: UIResponder.keyboardWillHideNotification, object: nil)
     }
+    
+    @objc func dismissKeyboard() {
+        view.endEditing(true)
+    }
+    
+    @objc func keyboardWillShow(notification: NSNotification) {
+        if let keyboardSize = (notification.userInfo?[UIResponder.keyboardFrameBeginUserInfoKey] as? NSValue)?.cgRectValue {
+            if self.view.frame.origin.y == 0 {
+                self.view.frame.origin.y -= keyboardSize.height
+            }
+        }
+    }
+    
+    @objc func keyboardWillHide(notification: NSNotification) {
+        if self.view.frame.origin.y != 0 {
+            self.view.frame.origin.y = 0
+        }
+    }
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        
+    }
+    
 }
+
+
 
 //MARK: - UITextField Delegate
 
 extension InputViewController: UITextFieldDelegate {
     
-    @IBAction func calculateButtonPressed(_ sender: UIButton) {
-        //print(locationManager.requestLocation())
-        
-        
+    func performAction() {
+        //locationManager.requestLocation()
         destinationTextField.endEditing(true)
-        locationManager.requestLocation()
+       performSegue(withIdentifier: "goToTarget", sender: self)
+//       //5 second delay for segue
+//        DispatchQueue.main.asyncAfter(deadline: .now() + 5.0) {
+//            self.performSegue(withIdentifier: "goToTarget", sender: self)
+//        }
         
-        performSegue(withIdentifier: "goToTarget", sender: self)
     }
     
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-       let destinationVC = segue.destination as! TargetViewController
-
-
+    
+    @IBAction func calculateButtonPressed(_ sender: UIButton) {
+        performAction()
     }
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        destinationTextField.endEditing(true)
+        performAction()
         destinationTextField.resignFirstResponder()
         return true
     }
@@ -67,34 +89,16 @@ extension InputViewController: UITextFieldDelegate {
             return false
         }
     }
-
+    
     func textFieldDidEndEditing(_ textField: UITextField) {
         if destinationTextField.text != nil {
-            destinationTextField.text! = mapsModel.name
-            getLatLon(destinationTextField.text!)
-            mapsManager.fetchDistance()
+            MapsManager.destinationName = destinationTextField.text!
+            
         }
         destinationTextField.text = ""
     }
     
-    func getLatLon(_ address: String) {
-        let geocoder = CLGeocoder()
-        let address = address
-        geocoder.geocodeAddressString(address, completionHandler: { (placemarks, error) -> Void in
-            if((error) != nil){
-                print("Error", error ?? "")
-            }
-            if let placemark = placemarks?.first {
-                let coordinates:CLLocationCoordinate2D = placemark.location!.coordinate
-                //print("Lat: \(coordinates.latitude), Long: \(coordinates.longitude)")
-                self.mapsManager.destinationLat = coordinates.latitude
-                self.mapsManager.destinationLon = coordinates.longitude
-                
-            }
-        })
-    }
 }
-
 
 //MARK: - LocationManager Delegates
 
@@ -106,12 +110,17 @@ extension InputViewController : CLLocationManagerDelegate {
     
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         
-        if let location = locations.last {
-            locationManager.stopUpdatingLocation()
-            let lat = location.coordinate.latitude
-            let lon = location.coordinate.longitude
-            mapsManager.fetchOrigin(lat, lon)
-            //print("lat: \(lat), long: \(lon)")
+        let userLocation : CLLocation = locations[0] as CLLocation
+        let geocoder = CLGeocoder()
+        geocoder.reverseGeocodeLocation(userLocation) { (placemarks, error) in
+            if (error != nil) {
+                print("error reverseGeoCode \(String(describing: error))")
+            }
+            let placemark = placemarks! as [CLPlacemark]
+            if placemark.count > 0 {
+                let origin = String((placemark.first?.locality!)!)
+                self.mapsManager.fetchDistance(origin)
+            }
         }
     }
 }

@@ -9,25 +9,17 @@
 import Foundation
 
 struct MapsData: Codable {
-    let name: String
-    let routes: Routes
+    let rows: [Rows]
 }
 
-struct Routes: Codable {
-    let legs: Legs
+struct Rows: Codable {
+    let elements: [Elements]
 }
 
-struct Legs: Codable {
-    let summary: Summary
-    let points: [Points]
+struct Elements: Codable {
+    let distance: Distance
 }
 
-struct Summary: Codable {
-    let lengthInMeters: String
-    let travelTimeInSeconds: String
-}
-
-struct Points: Codable {
-    let latitude: String
-    let longitude: String
+struct Distance: Codable {
+    let value: Int
 }

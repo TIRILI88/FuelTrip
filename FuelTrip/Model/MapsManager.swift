@@ -7,85 +7,76 @@
 //
 
 import Foundation
-import CoreLocation
-import TomTomOnlineUtils
-import TomTomOnlineSDKRouting
-import TomTomOnlineSDKSearch
-
 
 protocol MapsManagerDelegate {
-    func didUpdateLocation(_ mapsManager: MapsManager, map: MapsModel)
+    func fetchData(_ mapsManager: MapsManager, model: MapsModel)
     func didFailWithError(error: Error)
 }
 
 struct MapsManager {
     
-    let locationManager = CLLocationManager()
     var delegate: MapsManagerDelegate?
     
-    
-    //    let mapsURL = "https://api.tomtom.com/routing/1/calculateRoute/42.3314,83.0458:52.50274,13.43872/json?instructionsType=text&language=en-US&vehicleHeading=90&sectionType=traffic&report=effectiveSettings&routeType=eco&traffic=false&avoid=unpavedRoads&travelMode=car&vehicleMaxSpeed=120&vehicleCommercial=false&vehicleEngineType=combustion&key=MHKUzZjFRX7YGKlbsJmUc1myIpXkAKfz"
-    
-    let URLfirst = "https://api.tomtom.com/routing/1/calculateRoute/"
-    let URLlast = "/json?instructionsType=text&language=en-US&vehicleHeading=90&sectionType=traffic&report=effectiveSettings&routeType=eco&traffic=false&avoid=unpavedRoads&travelMode=car&vehicleMaxSpeed=120&vehicleCommercial=false&vehicleEngineType=combustion&key=MHKUzZjFRX7YGKlbsJmUc1myIpXkAKfz"
-    
-    var originLat = "42.32939"
-    var originLon = "-83.044933"
-    var destinationLat : CLLocationDegrees = 42.32939
-    var destinationLon : CLLocationDegrees = -83.044933
+    static var destinationName = ""
+    static var lengthInMeters: String = ""
     
     
-    func fetchOrigin(_ originLat: CLLocationDegrees,_ originLon: CLLocationDegrees) {
-        let urlString = "\(URLfirst)\(originLat),\(originLon):\(destinationLat),\(destinationLon)\(URLlast)"
-        performRequest(with: urlString)
-
-    }
+    //    mapsURL = https://maps.googleapis.com/maps/api/distancematrix/json?origins=Seattle&destinations=San+Francisco&key=
     
+    let URLfirst = "https://maps.googleapis.com/maps/api/distancematrix/json?origins="
     
-    
-    func fetchDistance() {
-        let urlString = "\(URLfirst)\(originLat),\(originLon):\(destinationLat),\(destinationLon)\(URLlast)"
-        print(urlString)
+    func fetchDistance(_ origin: String) {
+        let urlString = "\(URLfirst)\(origin)&destinations=\(MapsManager.destinationName)&key=AIzaSyBPKuxDwsPuBm1SPnfD6TmT7SKovChaxl4"
+        //print(urlString)
         performRequest(with: urlString)
     }
     
-
     func performRequest(with urlString: String) {
-
-        if let url = URL(string: urlString) {
+        if let url = urlString.addingPercentEncoding(withAllowedCharacters: CharacterSet.urlQueryAllowed) {
+            print(url)
+            let encodedURL = URL(string: url)
             let session = URLSession(configuration: .default)
-            let task = session.dataTask(with: url) { (data, response, error) in
+            let task = session.dataTask(with: encodedURL!) { (data, response, error) in
                 if error != nil {
+                    print("urlString didnt work: \(String(describing: error))")
                     self.delegate?.didFailWithError(error: error!)
                     return
                 }
                 if let safeData = data {
-                    if let maps = self.parseJSON(safeData) {
-                        self.delegate?.didUpdateLocation(self, map: maps)
+                    if let model = self.parseJSON(mapsData: safeData) {
+                        self.delegate?.fetchData(self, model: model)
+                        print("Model from performRequest \(model)")
                     }
                 }
+                
             }
             task.resume()
         }
-
     }
-
-    func parseJSON(_ mapsData: Data) -> MapsModel? {
+    
+    func parseJSON(mapsData: Data) -> MapsModel? {
         let decoder = JSONDecoder()
         do {
             let decodedData = try decoder.decode(MapsData.self, from: mapsData)
-            let name = decodedData.name
-            let distance = Float(decodedData.routes.legs.summary.lengthInMeters)
-            print(name)
-            print(distance ?? 0.00)
-            let map = MapsModel(name: name, distance: distance ?? 0.00)
-            return map
+            let distance = decodedData.rows[0].elements[0].distance.value
+            var distanceMiles: Double {
+                return ((Double(distance) * 0.000621371))
+            }
+            var numberOfGasStops: Int {
+                return Int(Double(distanceMiles) / Double(320))
+            }
+            var costOfTrip: Double {
+                return Double(numberOfGasStops) * Double(25.19)
+            }
+            let model = MapsModel(lengthInMeters: distance, distanceMiles: distanceMiles, costOfTrip: costOfTrip, numberOfGasStops: numberOfGasStops)
+            //print(model)
+            return model
+            
         } catch {
-            delegate?.didFailWithError(error: error)
+            print(error)
+            return nil
         }
-        return nil
     }
-    
 }
 
 
