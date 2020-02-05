@@ -18,8 +18,10 @@ struct MapsManager {
     var delegate: MapsManagerDelegate?
     
     static var destinationName = ""
-    static var lengthInMeters: String = ""
-    
+    let rangePerFill = 320      //Average of 32 Miles per Gallon
+    let fuelInTank = 11         //Average consumption per Gasstop (in  Gallon)
+    let fuelPrice = 2.29        //Input of actual Gasprice on a later state
+    var pricePerFill = 25.19    // fuelPrice * fuelInTank
     
     //    mapsURL = https://maps.googleapis.com/maps/api/distancematrix/json?origins=Seattle&destinations=San+Francisco&key=
     
@@ -28,13 +30,11 @@ struct MapsManager {
     
     func fetchDistance(_ origin: String) {
         let urlString = "\(URLfirst)\(origin)&destinations=\(MapsManager.destinationName)&key=\(apiKey)"
-        //print(urlString)
         performRequest(with: urlString)
     }
     
     func performRequest(with urlString: String) {
         if let url = urlString.addingPercentEncoding(withAllowedCharacters: CharacterSet.urlQueryAllowed) {
-            print(url)
             let encodedURL = URL(string: url)
             let session = URLSession(configuration: .default)
             let task = session.dataTask(with: encodedURL!) { (data, response, error) in
@@ -46,10 +46,8 @@ struct MapsManager {
                 if let safeData = data {
                     if let model = self.parseJSON(mapsData: safeData) {
                         self.delegate?.fetchData(self, model: model)
-                        print("Model from performRequest \(model)")
                     }
                 }
-                
             }
             task.resume()
         }
@@ -64,10 +62,10 @@ struct MapsManager {
                 return ((Double(distance) * 0.000621371))
             }
             var numberOfGasStops: Int {
-                return Int(Double(distanceMiles) / Double(320))
+                return Int(Double(distanceMiles) / Double(rangePerFill))
             }
             var costOfTrip: Double {
-                return Double(numberOfGasStops) * Double(25.19)
+                return Double(numberOfGasStops) * Double(pricePerFill)
             }
             let model = MapsModel(lengthInMeters: distance, distanceMiles: distanceMiles, costOfTrip: costOfTrip, numberOfGasStops: numberOfGasStops)
             //print(model)

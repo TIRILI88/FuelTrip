@@ -12,12 +12,16 @@ import CoreLocation
 class TargetViewController: UIViewController, MapsManagerDelegate {
     
     
+    @IBOutlet weak var originLabel: UILabel!
     @IBOutlet weak var destinationLabel: UILabel!
     @IBOutlet weak var numberOfStopsLabel: UILabel!
     @IBOutlet weak var distanceInMilesLabel: UILabel!
     @IBOutlet weak var moneyForGasLabel: UILabel!
+    @IBOutlet weak var fromLabel: UILabel!
+    @IBOutlet weak var toLabel: UILabel!
+    @IBOutlet weak var isCalculatingLabel: UILabel!
     
-    var locationManager = CLLocationManager()
+    let locationManager = CLLocationManager()
     var mapsManager = MapsManager()
     var finalName = MapsManager.destinationName    
     
@@ -26,20 +30,43 @@ class TargetViewController: UIViewController, MapsManagerDelegate {
         
         locationManager.delegate = self
         mapsManager.delegate = self
-        destinationLabel.text = finalName
+        destinationLabel.isHidden = true
+        originLabel.isHidden = true
         locationManager.requestLocation()
-        
+        numberOfStopsLabel.isHidden = true
+        distanceInMilesLabel.isHidden = true
+        moneyForGasLabel.isHidden = true
+        fromLabel.isHidden = true
+        toLabel.isHidden = true
     }
     
-    func fetchData(_ mapsManager: MapsManager, model: MapsModel) {
-        print("didFetch before Main Thread fired")
-        
+    func fetchData(_ mapsManager: MapsManager, model: MapsModel) {      
         DispatchQueue.main.async {
-            print("didFetchCity fired")
-            print(model.lengthInMeters)
-            self.numberOfStopsLabel.text = String(model.numberOfGasStops)
-            self.distanceInMilesLabel.text = String(format: "%.0f", model.distanceMiles)
-            self.moneyForGasLabel.text = String(format: "%.2f", model.costOfTrip)
+            var gasStopLabelText: String = ""
+            
+            if model.numberOfGasStops > 1 {
+                gasStopLabelText = ("you will need \(String(model.numberOfGasStops)) gasstops.")
+            } else if model.numberOfGasStops == 1 {
+                gasStopLabelText = ("you only have to stop once.")
+            } else if model.numberOfGasStops < 1 {
+                gasStopLabelText = "You don't need to fill up."
+            }
+            
+            if self.numberOfStopsLabel.text != "" {
+                self.isCalculatingLabel.isHidden = true
+                self.destinationLabel.isHidden = false
+                self.destinationLabel.text = self.finalName
+                self.numberOfStopsLabel.isHidden = false
+                self.originLabel.isHidden = false
+                self.distanceInMilesLabel.isHidden = false
+                self.moneyForGasLabel.isHidden = false
+                self.fromLabel.isHidden = false
+                self.toLabel.isHidden = false
+                self.numberOfStopsLabel.text = gasStopLabelText
+                self.distanceInMilesLabel.text = ("It's going to be \(String(format: "%.0f", model.distanceMiles)) miles to drive,")
+                self.moneyForGasLabel.text = ("You will spend $\(String(format: "%.2f", model.costOfTrip))")
+            }
+
         }
     }
     
@@ -68,6 +95,7 @@ extension TargetViewController : CLLocationManagerDelegate {
             if placemark.count > 0 {
                 let origin = String((placemark.first?.locality!)!)
                 self.mapsManager.fetchDistance(origin)
+                self.originLabel.text = origin
             }
         }
     }

@@ -21,7 +21,6 @@ class InputViewController: UIViewController {
         super.viewDidLoad()
         
         let tap: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(UIInputViewController.dismissKeyboard))
-        locationManager.delegate = self
         locationManager.requestWhenInUseAuthorization()
         destinationTextField.delegate = self
         
@@ -47,10 +46,6 @@ class InputViewController: UIViewController {
             self.view.frame.origin.y = 0
         }
     }
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        
-    }
-    
 }
 
 
@@ -60,14 +55,8 @@ class InputViewController: UIViewController {
 extension InputViewController: UITextFieldDelegate {
     
     func performAction() {
-        //locationManager.requestLocation()
         destinationTextField.endEditing(true)
-       performSegue(withIdentifier: "goToTarget", sender: self)
-//       //5 second delay for segue
-//        DispatchQueue.main.asyncAfter(deadline: .now() + 5.0) {
-//            self.performSegue(withIdentifier: "goToTarget", sender: self)
-//        }
-        
+        performSegue(withIdentifier: "goToTarget", sender: self)
     }
     
     
@@ -97,33 +86,8 @@ extension InputViewController: UITextFieldDelegate {
         }
         destinationTextField.text = ""
     }
-    
 }
 
-//MARK: - LocationManager Delegates
-
-extension InputViewController : CLLocationManagerDelegate {
-    
-    func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
-        print("error:: \(error.localizedDescription)")
-    }
-    
-    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-        
-        let userLocation : CLLocation = locations[0] as CLLocation
-        let geocoder = CLGeocoder()
-        geocoder.reverseGeocodeLocation(userLocation) { (placemarks, error) in
-            if (error != nil) {
-                print("error reverseGeoCode \(String(describing: error))")
-            }
-            let placemark = placemarks! as [CLPlacemark]
-            if placemark.count > 0 {
-                let origin = String((placemark.first?.locality!)!)
-                self.mapsManager.fetchDistance(origin)
-            }
-        }
-    }
-}
 
 
 
